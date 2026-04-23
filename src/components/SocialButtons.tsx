@@ -1,15 +1,15 @@
 "use client";
 
 import { Box, IconButton, Tooltip, useMediaQuery, useTheme } from "@mui/material";
-import { WhatsApp, Instagram, LocationOn } from "@mui/icons-material";
+import { WhatsApp, Instagram } from "@mui/icons-material";
 
 interface SocialButtonsProps {
   whatsapp: string;
   instagram: string;
-  location: string;
+  location?: string;
 }
 
-const SocialButtons = ({ whatsapp, instagram, location }: SocialButtonsProps) => {
+const SocialButtons = ({ whatsapp, instagram }: SocialButtonsProps) => {
   const theme = useTheme();
   
   const isMobile = useMediaQuery(theme.breakpoints.down("sm")); // < 600px
@@ -28,6 +28,28 @@ const SocialButtons = ({ whatsapp, instagram, location }: SocialButtonsProps) =>
         zIndex: 10,
       }}
     >
+      {/* Botão do Instagram */}
+      <Tooltip title="Instagram">
+        <IconButton
+          component="a"
+          href={instagram}
+          target="_blank"
+          rel="noopener noreferrer"
+          sx={{
+            background: "linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%)",
+            color: "white",
+            width: isMobile ? 48 : 56, 
+            height: isMobile ? 48 : 56, 
+            boxShadow: "0 4px 15px rgba(225, 48, 108, 0.4)",
+            "&:hover": { 
+              background: "linear-gradient(45deg, #e08323 0%, #d5572c 25%, #cb1633 50%, #bb1256 75%, #ab0778 100%)",
+            },
+          }}
+        >
+          <Instagram fontSize={isMobile ? "medium" : "large"} />
+        </IconButton>
+      </Tooltip>
+
       {/* Botão do WhatsApp */}
       <Tooltip title="WhatsApp">
         <IconButton
@@ -38,50 +60,13 @@ const SocialButtons = ({ whatsapp, instagram, location }: SocialButtonsProps) =>
           sx={{
             backgroundColor: "#25D366",
             color: "white",
-            width: isMobile ? 40 : 56,  // Tamanho menor no mobile
-            height: isMobile ? 40 : 56, 
+            width: isMobile ? 48 : 56,
+            height: isMobile ? 48 : 56, 
+            boxShadow: "0 4px 15px rgba(37, 211, 102, 0.4)",
             "&:hover": { backgroundColor: "#1DA851" },
           }}
         >
           <WhatsApp fontSize={isMobile ? "medium" : "large"} />
-        </IconButton>
-      </Tooltip>
-
-      {/* Botão do Instagram */}
-      <Tooltip title="Instagram">
-        <IconButton
-          component="a"
-          href={instagram}
-          target="_blank"
-          rel="noopener noreferrer"
-          sx={{
-            backgroundColor: "#E1306C",
-            color: "white",
-            width: isMobile ? 40 : 56, 
-            height: isMobile ? 40 : 56, 
-            "&:hover": { backgroundColor: "#C0275F" },
-          }}
-        >
-          <Instagram fontSize={isMobile ? "medium" : "large"} />
-        </IconButton>
-      </Tooltip>
-
-      {/* Botão de Localização */}
-      <Tooltip title="Localização">
-        <IconButton
-          component="a"
-          href={location}
-          target="_blank"
-          rel="noopener noreferrer"
-          sx={{
-            backgroundColor: "#FF5733",
-            color: "white",
-            width: isMobile ? 40 : 56, 
-            height: isMobile ? 40 : 56, 
-            "&:hover": { backgroundColor: "#D94729" },
-          }}
-        >
-          <LocationOn fontSize={isMobile ? "medium" : "large"} />
         </IconButton>
       </Tooltip>
     </Box>

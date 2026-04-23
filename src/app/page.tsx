@@ -2,13 +2,12 @@
 import CatalogoFireCloud from "@/components/catalogoFireCloud";
 import LogoCarrosel from "@/components/logoCarrosel";
 import ProdutosCatalogo, { Produto } from "@/components/produtosCatalogo";
-import Sidebar from "@/components/Sidebar";
 import SocialButtons from "@/components/SocialButtons";
+import Header from "@/components/Header";
+import CategoryCards from "@/components/CategoryCards";
 import DeleteIcon from "@mui/icons-material/Delete";
-import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import {
   Avatar,
-  Badge,
   Box,
   Button,
   Dialog,
@@ -124,10 +123,12 @@ export default function Home() {
 
 
   return (
-    <Box mb={10}>
-      <Sidebar />
+    <Box sx={{ backgroundColor: "#0a0a0a", minHeight: "100vh" }}>
+      <Header cartCount={totalItems} onCartClick={() => setIsCheckoutOpen(true)} />
 
       <CatalogoFireCloud />
+
+      <CategoryCards />
 
       <SocialButtons 
         whatsapp="https://wa.me/5511937701183?text=Olá,%20gostaria%20de%20tirar%20algumas%20Duvidas!" 
@@ -148,25 +149,7 @@ export default function Home() {
         />
       ))}
 
-      <Box
-        sx={{
-          position: "fixed",
-          left: 16,
-          bottom: 16,
-          zIndex: 20,
-        }}
-      >
-        <Badge badgeContent={totalItems} color="error">
-          <Button
-            variant="contained"
-            startIcon={<ShoppingCartIcon />}
-            sx={{ backgroundColor: "black", "&:hover": { backgroundColor: "#1f1f1f" } }}
-            onClick={() => setIsCheckoutOpen(true)}
-          >
-            Comprar
-          </Button>
-        </Badge>
-      </Box>
+
 
       <Dialog open={isCheckoutOpen} onClose={() => setIsCheckoutOpen(false)} fullWidth maxWidth="sm">
         <DialogTitle>Finalizar pedido</DialogTitle>
