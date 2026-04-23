@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react";
 import {
-  Paper,
   Card,
   CardContent,
   Typography,
@@ -16,6 +15,7 @@ import {
   useTheme,
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
+import AddIcon from "@mui/icons-material/Add";
 import Image from "next/image";
 import { getSupabaseBrowserClient } from "@/lib/supabaseClient";
 
@@ -81,158 +81,210 @@ export default function ProdutosCatalogo({
   }, [jsonPath, categoriaId]);
 
   return (
-    <Paper
+    <Box
       id={id}
-      elevation={3}
       sx={{
-        p: isMobile ? 2 : isTablet ? 3 : 4,
-        maxWidth: isMobile ? "100%" : isTablet ? "90%" : "1200px",
-        mx: isMobile ? 2 : isTablet ? 10 : "auto",
-        position: "relative",
-        overflow: "hidden",
-        backgroundColor: "rgba(255, 255, 255, 0.8)",
-        marginBottom: 3,
+        py: isMobile ? 3 : 4,
+        px: isMobile ? 2 : isTablet ? 4 : 6,
+        maxWidth: "1400px",
+        mx: "auto",
       }}
     >
       {/* Título da categoria */}
-      <Box
+      <Typography
+        variant="h4"
         sx={{
-          position: "absolute",
-          top: isMobile ? 12 : 16,
-          left: 0,
-          backgroundColor: "black",
-          px: isMobile ? 1.5 : 2,
-          py: 1,
-          borderRadius: "0 10px 10px 0",
-          zIndex: 1,
+          color: "#d4af37",
+          fontWeight: 600,
+          mb: 3,
+          fontSize: isMobile ? "1.5rem" : "2rem",
+          fontStyle: "italic",
         }}
       >
-        <Typography
-          variant={isMobile ? "h5" : isTablet ? "h4" : "h3"}
-          fontSize={isMobile ? 16 : isTablet ? 20 : 25}
-          fontWeight="bold"
-          color="white"
-        >
-          {categoria}
-        </Typography>
-      </Box>
+        {categoria}
+      </Typography>
 
-      {/* Espaçamento extra para evitar sobreposição do título */}
-      <Box sx={{ mt: isMobile ? 8 : isTablet ? 10 : 12 }}>
-        <Grid container spacing={isMobile ? 2 : isTablet ? 3 : 4}>
-          {produtos.map((produto, index) => (
-            <Grid item xs={12} sm={6} md={4} lg={3} key={index}>
-              <Card
+      <Grid container spacing={isMobile ? 2 : 3}>
+        {produtos.map((produto, index) => (
+          <Grid item xs={6} sm={6} md={4} lg={3} key={index}>
+            <Card
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+                backgroundColor: "#1a1a1a",
+                border: "1px solid #2a2a2a",
+                borderRadius: 2,
+                overflow: "hidden",
+                height: "100%",
+                transition: "transform 0.2s, border-color 0.2s",
+                "&:hover": {
+                  ...(isDesktop
+                    ? { transform: "translateY(-4px)", borderColor: "#3a3a3a" }
+                    : {}),
+                },
+              }}
+            >
+              {/* Área da imagem */}
+              <Box
+                role="button"
+                tabIndex={0}
+                onClick={() => setSelectedProduct(produto)}
+                onKeyDown={(event) => {
+                  if (event.key === "Enter" || event.key === " ") {
+                    event.preventDefault();
+                    setSelectedProduct(produto);
+                  }
+                }}
                 sx={{
-                  display: "flex",
-                  flexDirection: "column",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  p: isMobile ? 2 : isTablet ? 2.5 : 3,
-                  minHeight: isMobile ? 250 : isTablet ? 280 : 350,
-                  borderRadius: 2,
-                  boxShadow: 3,
-                  transition: "transform 0.3s, box-shadow 0.3s",
-                  "&:hover": {
-                    ...(isDesktop
-                      ? { transform: "scale(1.05)", boxShadow: 6 }
-                      : {}),
-                  },
+                  position: "relative",
+                  width: "100%",
+                  paddingTop: "100%",
+                  backgroundColor: "#141414",
+                  cursor: "zoom-in",
                 }}
               >
-                {/* Imagem do produto com fallback */}
                 <Box
-                  role="button"
-                  tabIndex={0}
-                  onClick={() => setSelectedProduct(produto)}
-                  onKeyDown={(event) => {
-                    if (event.key === "Enter" || event.key === " ") {
-                      event.preventDefault();
-                      setSelectedProduct(produto);
-                    }
-                  }}
                   sx={{
-                    position: "relative",
-                    width: isMobile ? 120 : isTablet ? 140 : 170,
-                    height: isMobile ? 120 : isTablet ? 140 : 170,
+                    position: "absolute",
+                    top: 0,
+                    left: 0,
+                    right: 0,
+                    bottom: 0,
                     display: "flex",
                     alignItems: "center",
                     justifyContent: "center",
-                    mb: 0.5,
-                    cursor: "zoom-in",
                   }}
                 >
                   <Image
                     src={produto.src}
                     alt={produto.nome}
                     fill
-                    sizes={isMobile ? "120px" : isTablet ? "140px" : "170px"}
-                    style={{ objectFit: "contain" }}
+                    sizes={isMobile ? "50vw" : isTablet ? "33vw" : "25vw"}
+                    style={{ objectFit: "contain", padding: "16px" }}
                     onError={(e) => {
                       const target = e.target as HTMLImageElement;
                       target.src = "/unavailable.webp";
                     }}
                   />
                 </Box>
+              </Box>
 
-                <CardContent sx={{ textAlign: "center", width: "100%" }}>
+              {/* Conteúdo do card */}
+              <CardContent
+                sx={{
+                  p: isMobile ? 1.5 : 2,
+                  display: "flex",
+                  flexDirection: "column",
+                  flexGrow: 1,
+                  "&:last-child": { pb: isMobile ? 1.5 : 2 },
+                }}
+              >
+                <Typography
+                  variant="subtitle1"
+                  sx={{
+                    color: "#d4af37",
+                    fontWeight: 600,
+                    fontSize: isMobile ? "0.9rem" : "1rem",
+                    lineHeight: 1.3,
+                    mb: 0.5,
+                  }}
+                >
+                  {produto.nome}
+                </Typography>
+                
+                {produto.descricao && (
                   <Typography
-                    variant={isMobile ? "body1" : "h6"}
-                    fontWeight="medium"
+                    variant="body2"
+                    sx={{
+                      color: "#888888",
+                      fontSize: isMobile ? "0.75rem" : "0.85rem",
+                      lineHeight: 1.4,
+                      display: "-webkit-box",
+                      WebkitLineClamp: 2,
+                      WebkitBoxOrient: "vertical",
+                      overflow: "hidden",
+                      mb: 1.5,
+                      flexGrow: 1,
+                    }}
                   >
-                    {produto.nome}
+                    {produto.descricao}
                   </Typography>
-                  {produto.descricao && (
-                    <Typography
-                      variant="body2"
-                      color="text.secondary"
-                      mt={0.8}
-                      sx={{
-                        minHeight: isMobile ? 36 : 42,
-                        display: "-webkit-box",
-                        WebkitLineClamp: 2,
-                        WebkitBoxOrient: "vertical",
-                        overflow: "hidden",
-                      }}
-                    >
-                      {produto.descricao}
-                    </Typography>
-                  )}
+                )}
+
+                {/* Preço e botão */}
+                <Box
+                  sx={{
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "space-between",
+                    mt: "auto",
+                    gap: 1,
+                  }}
+                >
                   <Typography
-                    variant="body1"
-                    color="primary"
-                    fontWeight="bold"
-                    mt={1}
+                    variant="h6"
+                    sx={{
+                      color: "#d4af37",
+                      fontWeight: 700,
+                      fontSize: isMobile ? "1rem" : "1.15rem",
+                    }}
                   >
                     {formatPriceBRL(produto.preco)}
                   </Typography>
+                  
                   <Button
-                    fullWidth
-                    variant="contained"
-                    size={isMobile ? "small" : "medium"}
-                    sx={{ mt: 1.5, backgroundColor: "black", "&:hover": { backgroundColor: "#1f1f1f" } }}
+                    variant="outlined"
+                    size="small"
+                    startIcon={<AddIcon sx={{ fontSize: isMobile ? 16 : 18 }} />}
                     onClick={() => onAddToCart(produto, categoria)}
+                    sx={{
+                      borderColor: "#d4af37",
+                      color: "#d4af37",
+                      textTransform: "none",
+                      fontSize: isMobile ? "0.75rem" : "0.85rem",
+                      px: isMobile ? 1 : 1.5,
+                      py: 0.5,
+                      minWidth: "auto",
+                      "&:hover": {
+                        borderColor: "#e5c349",
+                        backgroundColor: "rgba(212, 175, 55, 0.1)",
+                      },
+                    }}
                   >
-                    Adicionar ao carrinho
+                    Adicionar
                   </Button>
-                </CardContent>
-              </Card>
-            </Grid>
-          ))}
-        </Grid>
-      </Box>
+                </Box>
+              </CardContent>
+            </Card>
+          </Grid>
+        ))}
+      </Grid>
 
+      {/* Modal de visualização do produto */}
       <Dialog
         open={Boolean(selectedProduct)}
         onClose={() => setSelectedProduct(null)}
         maxWidth="sm"
         fullWidth
+        PaperProps={{
+          sx: {
+            backgroundColor: "#1a1a1a",
+            border: "1px solid #2a2a2a",
+          },
+        }}
       >
         <DialogContent sx={{ p: 2.5, position: "relative" }}>
           <IconButton
             aria-label="Fechar"
             onClick={() => setSelectedProduct(null)}
-            sx={{ position: "absolute", top: 8, right: 8, zIndex: 2 }}
+            sx={{ 
+              position: "absolute", 
+              top: 8, 
+              right: 8, 
+              zIndex: 2,
+              color: "#888888",
+              "&:hover": { color: "#ffffff" },
+            }}
           >
             <CloseIcon />
           </IconButton>
@@ -245,6 +297,8 @@ export default function ProdutosCatalogo({
                   width: "100%",
                   height: { xs: 280, sm: 420 },
                   mt: 1,
+                  backgroundColor: "#141414",
+                  borderRadius: 1,
                 }}
               >
                 <Image
@@ -252,15 +306,25 @@ export default function ProdutosCatalogo({
                   alt={selectedProduct.nome}
                   fill
                   sizes="(max-width: 600px) 90vw, 560px"
-                  style={{ objectFit: "contain" }}
+                  style={{ objectFit: "contain", padding: "16px" }}
                 />
               </Box>
 
-              <Typography variant="h6" fontWeight="bold" mt={2}>
+              <Typography 
+                variant="h6" 
+                sx={{ 
+                  color: "#d4af37", 
+                  fontWeight: "bold", 
+                  mt: 2 
+                }}
+              >
                 {selectedProduct.nome}
               </Typography>
               {selectedProduct.descricao && (
-                <Typography variant="body2" color="text.secondary" mt={0.8}>
+                <Typography 
+                  variant="body2" 
+                  sx={{ color: "#888888", mt: 0.8 }}
+                >
                   {selectedProduct.descricao}
                 </Typography>
               )}
@@ -268,6 +332,6 @@ export default function ProdutosCatalogo({
           )}
         </DialogContent>
       </Dialog>
-    </Paper>
+    </Box>
   );
 }
