@@ -76,10 +76,10 @@ const Header = ({ cartCount, onCartClick }: HeaderProps) => {
           <Box sx={{ display: "flex", alignItems: "center" }}>
             <Link href="/" style={{ display: "flex", alignItems: "center" }}>
               <Image
-                src="/brands/Logo1.png"
+                src="/logo-marrakech.png"
                 alt="Marrakech Tabacaria"
-                width={100}
-                height={40}
+                width={120}
+                height={48}
                 style={{ objectFit: "contain" }}
               />
             </Link>

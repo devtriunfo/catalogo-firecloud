@@ -77,13 +77,13 @@ const CatalogoFireCloud = () => {
         <Box
           sx={{
             position: "relative",
-            width: { xs: 180, md: 250 },
-            height: { xs: 80, md: 100 },
+            width: { xs: 220, md: 320 },
+            height: { xs: 100, md: 140 },
             mb: 3,
           }}
         >
           <Image
-            src="/brands/Logo1.png"
+            src="/logo-marrakech.png"
             alt="Marrakech Tabacaria"
             fill
             style={{ objectFit: "contain" }}
